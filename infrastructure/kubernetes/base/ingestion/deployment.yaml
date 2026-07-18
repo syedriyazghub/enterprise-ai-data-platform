@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingestion-service
+  namespace: ai-platform
+  labels:
+    app: ingestion-service
+    version: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ingestion-service
+  template:
+    metadata:
+      labels:
+        app: ingestion-service
+        version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8001"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: ingestion-service
+          image: ai-platform/ingestion-service:latest
+          ports:
+            - containerPort: 8001
+          envFrom:
+            - configMapRef:
+                name: platform-config
+            - secretRef:
+                name: platform-secrets
+          env:
+            - name: PORT
+              value: "8001"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 10
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingestion-service
+  namespace: ai-platform
+spec:
+  selector:
+    app: ingestion-service
+  ports:
+    - port: 8001
+      targetPort: 8001
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ingestion-service-hpa
+  namespace: ai-platform
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ingestion-service
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

@@ -1,0 +1,58 @@
+name: CD - Deploy to Production
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name ai-platform-eks --region us-east-1
+
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f infrastructure/kubernetes/base/namespace.yaml
+          kubectl apply -f infrastructure/kubernetes/base/
+          kubectl apply -f infrastructure/kubernetes/base/ingestion/
+
+      - name: Rollout restart services
+        run: |
+          kubectl rollout restart deployment/ingestion-service -n ai-platform
+          kubectl rollout restart deployment/validation-service -n ai-platform
+          kubectl rollout restart deployment/ai-service -n ai-platform
+          kubectl rollout restart deployment/frontend -n ai-platform
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/ingestion-service -n ai-platform --timeout=300s
+          kubectl rollout status deployment/validation-service -n ai-platform --timeout=300s
+
+      - name: Notify Slack on success
+        if: success()
+        run: |
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+            -H 'Content-type: application/json' \
+            -d '{"text":"✅ AI Platform deployed successfully to production (SHA: ${{ github.sha }})"}'
+
+      - name: Notify Slack on failure
+        if: failure()
+        run: |
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+            -H 'Content-type: application/json' \
+            -d '{"text":"❌ AI Platform deployment FAILED (SHA: ${{ github.sha }})"}'

@@ -1,0 +1,7 @@
+customer_id,company_name,contact_name,contact_email,contact_phone,industry,country,state,city,postal_code,annual_revenue,employee_count,lead_source,lead_status,assigned_to,created_date,last_activity_date,deal_value,deal_stage,close_probability,notes
+CRM-001,Acme Industries,John Smith,john.smith@acme.com,+1-555-0101,Manufacturing,USA,California,San Francisco,94102,5000000,250,Website,Qualified,Sarah Johnson,2024-01-05,2024-01-20,150000,Proposal Sent,60,Interested in enterprise plan
+CRM-002,Global Traders,Maria Garcia,maria.garcia@globaltraders.com,+44-20-7946-0958,Retail,UK,England,London,EC1A 1BB,12000000,800,Referral,Negotiation,Mike Chen,2024-01-08,2024-01-22,380000,Contract Review,85,Final pricing discussion ongoing
+CRM-003,StartupXYZ,Priya Patel,priya.patel@startupxyz.com,+91-9876543210,Technology,India,Karnataka,Bangalore,560001,500000,45,LinkedIn,New Lead,Raj Kumar,2024-01-10,2024-01-18,25000,Discovery,20,Early stage startup needs basic plan
+CRM-004,MegaCorp Ltd,David Wilson,david.wilson@megacorp.com,+1-555-0202,Finance,USA,New York,New York,10001,50000000,5000,Trade Show,Closed Won,Lisa Park,2023-12-15,2024-01-25,750000,Closed Won,100,Signed 3-year enterprise contract
+CRM-005,FinanceHub,Yuki Tanaka,yuki.tanaka@financehub.com,+81-3-1234-5678,Banking,Japan,Tokyo,Tokyo,100-0001,8000000,400,Cold Outreach,Proposal Sent,Tom Brown,2024-01-12,2024-01-21,220000,Proposal Sent,45,Evaluating competitors
+CRM-006,TechVentures,invalid-email,not-a-phone,,,,,,,,-1,,Unknown,,,,,,-10,,Incomplete record for testing

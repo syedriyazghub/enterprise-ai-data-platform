@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ai-platform
+  labels:
+    name: ai-platform
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-config
+  namespace: ai-platform
+data:
+  APP_ENV: "production"
+  POSTGRES_HOST: "postgres-service"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "ai_platform"
+  MONGODB_URI: "mongodb://mongodb-service:27017/ai_platform"
+  REDIS_URL: "redis://redis-service:6379/0"
+  CELERY_BROKER_URL: "redis://redis-service:6379/1"
+  CELERY_RESULT_BACKEND: "redis://redis-service:6379/2"
+  KAFKA_BOOTSTRAP_SERVERS: "kafka-service:9092"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://jaeger-service:4317"
+  CHROMADB_HOST: "chromadb-service"
+  CHROMADB_PORT: "8000"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: platform-secrets
+  namespace: ai-platform
+type: Opaque
+stringData:
+  SECRET_KEY: "change-me-in-production"
+  POSTGRES_USER: "platform_user"
+  POSTGRES_PASSWORD: "platform_pass"
+  JWT_SECRET: "your-jwt-secret-minimum-32-characters"
+  OPENAI_API_KEY: ""

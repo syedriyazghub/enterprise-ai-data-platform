@@ -1,0 +1,7 @@
+invoice_number,date,vendor_name,customer_name,customer_email,customer_phone,gst_number,pan_number,line_item_1,qty_1,unit_price_1,line_item_2,qty_2,unit_price_2,subtotal,tax_rate,tax_amount,total,payment_terms,due_date,bank_account,ifsc_code
+INV-2024-001,2024-01-15,TechCorp Solutions,Acme Industries,accounts@acme.com,+91-9876543210,27ABCDE1234F1Z5,ABCDE1234F,Software License,1,50000,Support Services,12,5000,110000,18,19800,129800,Net 30,2024-02-14,1234567890,HDFC0001234
+INV-2024-002,2024-01-18,DataSystems Ltd,Global Traders,finance@globaltraders.com,+91-8765432109,29XYZPQ9876G2Z3,XYZPQ9876G,Hardware Components,5,12000,Installation,1,8000,68000,18,12240,80240,Net 15,2024-02-02,9876543210,ICIC0005678
+INV-2024-003,2024-01-20,CloudServices Inc,StartupXYZ,cfo@startupxyz.com,+91-7654321098,07LMNOP5432H3Z1,LMNOP5432H,Cloud Hosting,1,25000,Domain Registration,3,1500,29500,18,5310,34810,Immediate,2024-01-20,5432109876,SBIN0009012
+INV-2024-004,2024-01-22,Analytics Pro,MegaCorp Ltd,billing@megacorp.com,+91-6543210987,19QRSTU7654I4Z9,QRSTU7654I,Analytics Platform,1,150000,Training,5,10000,200000,18,36000,236000,Net 45,2024-03-08,6543210987,AXIS0003456
+INV-2024-005,2024-01-25,SecureNet,FinanceHub,ap@financehub.com,+91-5432109876,33VWXYZ2109J5Z7,VWXYZ2109J,Security Audit,1,75000,Penetration Testing,1,45000,120000,18,21600,141600,Net 30,2024-02-24,2109876543,KOTAK0007890
+INV-2024-006,2024-01-28,invalid-vendor,,not-an-email,123,INVALID_GST,INVALID_PAN,Product A,,-500,,,-1,,,18,,Net 30,,,,
